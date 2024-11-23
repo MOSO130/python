@@ -5,42 +5,45 @@ class Television:
     MAX_CHANNEL = 3
 
     def __init__(self):
+        """Initialize the TV with default settings."""
         self._status = False
         self._muted = False
         self._volume = self.MIN_VOLUME
         self._channel = self.MIN_CHANNEL
 
     def power(self):
-        """Turn the TV on or off."""
+        """Toggle the TV's power state."""
         self._status = not self._status
 
     def mute(self):
-        """Mute or unmute the TV."""
+        """Toggle the mute state. Mute only works if the TV is on."""
         if self._status:
             self._muted = not self._muted
+            if self._muted:
+                self._volume = self.MIN_VOLUME
 
     def channel_up(self):
-        """Increase the TV channel, looping back to minimum if maximum is exceeded."""
+        """Increase the TV channel, loop to minimum if maximum is exceeded."""
         if self._status:
             self._channel = self.MIN_CHANNEL if self._channel == self.MAX_CHANNEL else self._channel + 1
 
     def channel_down(self):
-        """Decrease the TV channel, looping back to maximum if minimum is exceeded."""
+        """Decrease the TV channel, loop to maximum if minimum is exceeded."""
         if self._status:
             self._channel = self.MAX_CHANNEL if self._channel == self.MIN_CHANNEL else self._channel - 1
 
     def volume_up(self):
-        """Increase the TV volume unless muted or at maximum volume."""
+        """Increase the volume unless muted or already at the maximum."""
         if self._status and not self._muted:
             if self._volume < self.MAX_VOLUME:
                 self._volume += 1
 
     def volume_down(self):
-        """Decrease the TV volume unless muted or at minimum volume."""
+        """Decrease the volume unless muted or already at the minimum."""
         if self._status and not self._muted:
             if self._volume > self.MIN_VOLUME:
                 self._volume -= 1
 
     def __str__(self):
-        """Return the TV's current status, channel, and volume."""
+        """Return a string representation of the TV's current state."""
         return f"Power = {self._status}, Channel = {self._channel}, Volume = {self._volume}"
